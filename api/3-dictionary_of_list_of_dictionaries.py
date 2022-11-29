@@ -11,28 +11,28 @@ import json
 import requests
 from sys import argv
 
-if __name__ == "__main__":
-    users = requests.get(
-        "https://jsonplaceholder.typicode.com/users").json()
 
-    dict_json = {}
-    list_id = [int(u.get('id')) for u in users]
-    for ids in list_id:
-        users_id = requests.get(
-            "https://jsonplaceholder.typicode.com/users?id:ids").json()
-        # print(users_id)
-        user = users_id[0].get("username")
-        users_task = requests.get(
-            "https://jsonplaceholder.typicode.com/todos?userId:ids").json()
-        # print(user)
-        t_list = []
-        t_dict = {}
-        for t in users_task:
-            t_dict = {"username": user,
-                      "task": t.get('title'),
-                      "completed": t.get('completed')
-                      }
-            t_list.append(t_dict)
-        dict_json.update({ids: t_list})
-        with open("todo_all_employees.json", 'w') as jsonfile:
-            json.dump(dict_json, jsonfile)
+response_API = 'https://jsonplaceholder.typicode.com/'
+
+if __name__ == "__main__":
+    res = requests.get("{}users".format(response_API)).json()
+    # print(res)
+    tasks_list = []
+    tasks_dict = {}
+    for user in res:
+        name = user.get("username")
+        # print(name)
+        user_id = user.get("id")
+        # print(user_id)
+        tasks = requests.get("{}todos?userId={}".format(
+            response_API, user_id)).json()
+        # print(tasks)
+        for task in tasks:
+            # print(task)
+            t_d = {"username": name,
+                   "task": task.get("title"),
+                   "completed": task.get("completed")}
+            tasks_list.append(t_d)
+        tasks_dict[user_id] = tasks_list
+    with open("todo_all_employees.json", 'w') as jsonfile:
+        json.dump(tasks_dict, jsonfile)
