@@ -16,7 +16,7 @@ if __name__ == "__main__":
         "https://jsonplaceholder.typicode.com/users").json()
 
     dict_json = {}
-    list_id = [u.get('id') for u in users]
+    list_id = [int(u.get('id')) for u in users]
     for ids in list_id:
         users_id = requests.get(
             "https://jsonplaceholder.typicode.com/users?id:ids").json()
