@@ -16,6 +16,6 @@ if __name__ == "__main__":
         response_API, argv[1])).json()
 
     task_completed = [task['title'] for task in todos if task['completed']]
-    print("Employee {} is done with tasks ({}/{})"
+    print("Employee {} is done with tasks({}/{}):"
           .format(users["name"], len(task_completed), len(todos)))
     print("\n".join("\t {}".format(done) for done in task_completed))
