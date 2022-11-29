@@ -14,20 +14,18 @@ response_API = 'https://jsonplaceholder.typicode.com/'
 
 if __name__ == "__main__":
     users = requests.get("{}users/{}".format(response_API, argv[1])).json()
-    # print(users)
-    u = users.get('username')
-    # print(u)
     todos = requests.get("{}todos?userId={}".format(
         response_API, argv[1])).json()
 
-    records = []
-    _dict = {}
+    t_list = []
+    t_dict = {}
     for t in todos:
-        _dict = {"task": t.get("title"),
-                 "completed": t.get("completed"),
-                 "username": users
-                 }
-        records.append(_dict)
-    d_json = {argv[1]: records}
-    with open('{}.json'.format(argv[1]), 'w') as jsonfile:
-        json.dump(d_json, jsonfile)
+        t_dict = {"task": t.get("title"),
+                  "completed": t.get("completed"),
+                  "username": users
+                  }
+        t_list.append(t_dict)
+        dict_json = {}
+        dict_json[argv[1]] = t_list
+        with open("{}.json".format(argv[1]), 'w') as jsonfile:
+            json.dump(dict_json, jsonfile)
