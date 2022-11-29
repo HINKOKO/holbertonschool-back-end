@@ -6,6 +6,7 @@ Party time !!
 ==> "requests" module allows us to send HTTP Requests
 The request returns a Response Object with all data
 (content, encoding, status, etc...)
+==> many "print" statement to understand what was going on here
 """
 import json
 import requests
@@ -17,7 +18,7 @@ response_API = 'https://jsonplaceholder.typicode.com/'
 if __name__ == "__main__":
     res = requests.get("{}users".format(response_API)).json()
     # print(res)
-    tasks_list = []
+    # tasks_list = [] scope problem !!
     tasks_dict = {}
     for user in res:
         name = user.get("username")
@@ -27,12 +28,16 @@ if __name__ == "__main__":
         tasks = requests.get("{}todos?userId={}".format(
             response_API, user_id)).json()
         # print(tasks)
+        tasks_list = []
+        # tasks_list moved, scope problem fixed
         for task in tasks:
             # print(task)
             t_d = {"username": name,
                    "task": task.get("title"),
                    "completed": task.get("completed")}
             tasks_list.append(t_d)
-        tasks_dict[user_id] = tasks_list
+            # print(task)
+        # print(user_id)
+        tasks_dict[str(user_id)] = tasks_list
     with open("todo_all_employees.json", 'w') as jsonfile:
         json.dump(tasks_dict, jsonfile)
