@@ -11,11 +11,9 @@ import json
 import requests
 from sys import argv
 
-response_API = 'https://jsonplaceholder.typicode.com/'
 if __name__ == "__main__":
-    users = requests.get("{}users".format(response_API)).json()
-    # todos = requests.get("{}todos".format(
-    #     response_API)).json()
+    users = requests.get(
+        "https://jsonplaceholder.typicode.com/users").json()
 
     dict_json = {}
     list_id = [u.get('id') for u in users]
@@ -27,21 +25,14 @@ if __name__ == "__main__":
         users_task = requests.get(
             "https://jsonplaceholder.typicode.com/todos?userId:ids").json()
         # print(user)
-    t_list = []
-    t_dict = {}
-    for t in users_task:
-        t_dict = {"username": user,
-                  "task": t.get('title'),
-                  "completed": t.get('completed')
-                  }
-        t_list.append(t_dict)
-        dict_json = {}
+        t_list = []
+        t_dict = {}
+        for t in users_task:
+            t_dict = {"username": user,
+                      "task": t.get('title'),
+                      "completed": t.get('completed')
+                      }
+            t_list.append(t_dict)
         dict_json.update({ids: t_list})
         with open("todo_all_employees.json", 'w') as jsonfile:
             json.dump(dict_json, jsonfile)
-
-    # print(users)
-    # print(todos)
-
-    # with open("todo_all_employees.json", 'w') as jsonfile:
-    #     json.dump(dict_json, jsonfile)
